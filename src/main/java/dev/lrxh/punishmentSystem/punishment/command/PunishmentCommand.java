@@ -23,8 +23,8 @@ public class PunishmentCommand {
     }
 
     @Command(name = "kick", desc = "", usage = "<target>")
-    public void kick(@Sender Player player, Player target) {
-        ProfileService.get().get(target.getUniqueId()).kick(player.getUniqueId());
+    public void kick(@Sender CommandSender commandSender, Player target) {
+        ProfileService.get().get(target.getUniqueId()).kick(commandSender instanceof Player player ? player.getUniqueId() : null);
     }
 
     @Command(name = "unmute", desc = "", usage = "<targetName>")
@@ -56,11 +56,7 @@ public class PunishmentCommand {
         OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
 
         if (target.isOnline()) {
-            if (commandSender instanceof Player player) {
-                ProfileService.get().get(target.getUniqueId()).mute(player.getUniqueId(), duration, perm);
-            } else {
-                ProfileService.get().get(target.getUniqueId()).mute(null, duration, perm);
-            }
+            ProfileService.get().get(target.getUniqueId()).mute(commandSender instanceof Player player ? player.getUniqueId() : null, duration, perm);
             return;
         }
 
