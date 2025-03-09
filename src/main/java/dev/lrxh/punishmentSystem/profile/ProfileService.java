@@ -15,7 +15,16 @@ public class ProfileService {
         return instance;
     }
 
-    public void create(Player player) {
-        profiles.put(player.getUniqueId(), new Profile(player.getUniqueId()));
+    public Profile create(UUID uuid) {
+        profiles.put(uuid, new Profile(uuid));
+        return profiles.get(uuid);
+    }
+
+    public void remove(UUID uuid) {
+        profiles.remove(uuid);
+    }
+
+    public Profile get(UUID uuid) {
+        return profiles.get(uuid);
     }
 }
