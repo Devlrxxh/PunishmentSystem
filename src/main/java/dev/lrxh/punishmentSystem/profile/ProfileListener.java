@@ -29,8 +29,6 @@ public class ProfileListener implements Listener {
             event.setCancelled(true);
 
             SettingsLocale.MUTE_MESSAGE.send(event.getPlayer());
-
-            event.getPlayer().sendMessage("You cant talk ");
         }
     }
 }

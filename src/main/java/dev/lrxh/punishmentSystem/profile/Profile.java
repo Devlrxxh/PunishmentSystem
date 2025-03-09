@@ -115,7 +115,7 @@ public class Profile {
         addPunishment(new Punishment(PunishmentType.KICK, issuer, 1, false));
         Player player = getPlayer();
         if (player == null) return;
-        player.kick(Component.text(SettingsLocale.KICK_MESSAGE.getString().replace("<issuer>", issuerName)));
+        player.kick(Component.text(CC.color(SettingsLocale.KICK_MESSAGE.getString().replace("<issuer>", issuerName))));
     }
 
     public void unMute() {
