@@ -15,7 +15,7 @@ public class SQLiteDatabase implements IDatabase {
     private Connection connection;
 
     public SQLiteDatabase() {
-        this.dbPath = "jdbc:sqlite:" + Main.instance.getDataFolder() + "/neptune.db";
+        this.dbPath = "jdbc:sqlite:" + Main.instance.getDataFolder() + "/database.db";
     }
 
     @Override

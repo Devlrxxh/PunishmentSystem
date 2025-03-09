@@ -3,6 +3,8 @@ package dev.lrxh.punishmentSystem.punishment.command;
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Flag;
 import com.jonahseguin.drink.annotation.Sender;
+import dev.lrxh.punishmentSystem.configs.impl.MessagesLocale;
+import dev.lrxh.punishmentSystem.configs.impl.handler.Replacement;
 import dev.lrxh.punishmentSystem.database.DatabaseService;
 import dev.lrxh.punishmentSystem.database.impl.DataDocument;
 import dev.lrxh.punishmentSystem.profile.Profile;
@@ -37,7 +39,8 @@ public class PunishmentCommand {
         DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(target.getUniqueId());
 
         if (dataDocument == null) {
-            commandSender.sendMessage(CC.color("Player never joined server"));
+            if (commandSender instanceof Player player)
+                MessagesLocale.NEVER_JOINED.send(player, new Replacement("<player>", targetName));
             return;
         }
 
@@ -64,7 +67,8 @@ public class PunishmentCommand {
         DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(target.getUniqueId());
 
         if (dataDocument == null) {
-            commandSender.sendMessage(CC.color("Player never joined server"));
+            if (commandSender instanceof Player player)
+                MessagesLocale.NEVER_JOINED.send(player, new Replacement("<player>", targetName));
             return;
         }
 

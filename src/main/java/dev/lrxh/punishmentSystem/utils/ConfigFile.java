@@ -13,7 +13,7 @@ public class ConfigFile {
     private final YamlConfiguration configuration;
 
     public ConfigFile(String name) {
-        File dataFolder = new File(Main.instance.getDataFolder().getParentFile(), "Neptune");
+        File dataFolder = new File(Main.instance.getDataFolder().getParentFile(), Main.instance.getName());
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
         }
