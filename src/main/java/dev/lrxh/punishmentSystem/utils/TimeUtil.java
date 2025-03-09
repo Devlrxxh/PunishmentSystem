@@ -42,20 +42,16 @@ public class TimeUtil {
         if (millis >= TimeUnit.DAYS.toMillis(365)) {
             result = millis / TimeUnit.DAYS.toMillis(365);
             timeString = result + "year(s)";
-        }
-        else if (millis >= TimeUnit.DAYS.toMillis(1)) {
+        } else if (millis >= TimeUnit.DAYS.toMillis(1)) {
             result = millis / TimeUnit.DAYS.toMillis(1);
             timeString = result + "day(s)";
-        }
-        else if (millis >= TimeUnit.HOURS.toMillis(1)) {
+        } else if (millis >= TimeUnit.HOURS.toMillis(1)) {
             result = millis / TimeUnit.HOURS.toMillis(1);
             timeString = result + "hour(s)";
-        }
-        else if (millis >= TimeUnit.MINUTES.toMillis(1)) {
+        } else if (millis >= TimeUnit.MINUTES.toMillis(1)) {
             result = millis / TimeUnit.MINUTES.toMillis(1);
             timeString = result + "minute(s)";
-        }
-        else {
+        } else {
             result = millis / TimeUnit.SECONDS.toMillis(1);
             timeString = result + "second(s)";
         }

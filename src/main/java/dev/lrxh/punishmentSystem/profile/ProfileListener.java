@@ -1,10 +1,9 @@
 package dev.lrxh.punishmentSystem.profile;
 
+import dev.lrxh.punishmentSystem.configs.impl.SettingsLocale;
 import io.papermc.paper.event.player.AsyncChatEvent;
-import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -13,7 +12,7 @@ public class ProfileListener implements Listener {
     public void onJoin(AsyncPlayerPreLoginEvent event) {
         Profile profile = ProfileService.get().create(event.getUniqueId());
         if (profile.disallowJoin()) {
-            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, Component.text("Banned"));
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, profile.banMessage());
             ProfileService.get().remove(event.getUniqueId());
         }
     }
@@ -27,6 +26,9 @@ public class ProfileListener implements Listener {
     public void onMessage(AsyncChatEvent event) {
         if (ProfileService.get().get(event.getPlayer().getUniqueId()).disallowTalk()) {
             event.setCancelled(true);
+
+            SettingsLocale.MUTE_MESSAGE.send(event.getPlayer());
+
             event.getPlayer().sendMessage("You cant talk ");
         }
     }

@@ -66,7 +66,7 @@ public class PunishmentHistoryMenu extends Menu {
             }
 
 
-             buttons.add(new DisplayButton(i++, punishment.getIcon(), name.replace("<name>", punishment.getType().getName()), lore));
+            buttons.add(new DisplayButton(i++, punishment.getIcon(), name.replace("<name>", punishment.getType().getName()), lore));
         }
 
         return buttons;

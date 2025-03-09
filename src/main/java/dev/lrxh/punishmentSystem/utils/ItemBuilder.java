@@ -1,8 +1,6 @@
 package dev.lrxh.punishmentSystem.utils;
 
-import dev.lrxh.punishmentSystem.utils.CC;
 import org.bukkit.Material;
-
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -10,7 +8,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 public class ItemBuilder {
     private final ItemStack item;

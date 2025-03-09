@@ -1,10 +1,12 @@
 package dev.lrxh.punishmentSystem.profile;
 
 import dev.lrxh.punishmentSystem.Main;
+import dev.lrxh.punishmentSystem.configs.impl.SettingsLocale;
 import dev.lrxh.punishmentSystem.database.DatabaseService;
 import dev.lrxh.punishmentSystem.database.impl.DataDocument;
 import dev.lrxh.punishmentSystem.punishment.Punishment;
 import dev.lrxh.punishmentSystem.punishment.PunishmentType;
+import dev.lrxh.punishmentSystem.utils.CC;
 import dev.lrxh.punishmentSystem.utils.TimeUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +30,29 @@ public class Profile {
         this.punishments = new ArrayList<>();
     }
 
+    private static Punishment deserialize(String serialized) {
+        return Main.instance.getGson().fromJson(serialized, Punishment.class);
+    }
+
+    private static List<Punishment> deserializePunishments(List<String> punishments) {
+        if (punishments == null || punishments.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<Punishment> deserialized = new ArrayList<>();
+        for (String serialized : punishments) {
+            deserialized.add(deserialize(serialized));
+        }
+        return deserialized;
+    }
+
+    public static Profile deserialize(DataDocument dataDocument) {
+        return new Profile(
+                UUID.fromString(dataDocument.getString("uuid")),
+                deserializePunishments(dataDocument.getList("punishments")));
+
+    }
+
     public void save() {
         DatabaseService.get().getDatabase().replace(uuid, serialize());
     }
@@ -40,6 +65,25 @@ public class Profile {
         }
 
         return false;
+    }
+
+    public Component banMessage() {
+        Component component = Component.text("");
+
+        for (Punishment punishment : punishments) {
+            if (punishment.getType().isBan() && punishment.isOngoing()) {
+                for (String line : SettingsLocale.BAN_MESSAGE.getStringList()) {
+                    line = line.replaceAll("<issuer>", punishment.getIssuer());
+                    line = line.replaceAll("<issuedOn>", punishment.getIssuedOnString());
+                    line = line.replaceAll("<duration>", TimeUtil.unparse(punishment.getDuration()));
+
+                    component = component.append(Component.text(CC.color(line)));
+                    component = component.appendNewline();
+                }
+            }
+        }
+
+        return component;
     }
 
     public boolean disallowTalk() {
@@ -64,11 +108,11 @@ public class Profile {
         return Bukkit.getPlayer(uuid);
     }
 
-    public void kick(UUID issuer) {
+    public void kick(UUID issuer, String issuerName) {
         addPunishment(new Punishment(PunishmentType.KICK, issuer, 1, false));
         Player player = getPlayer();
         if (player == null) return;
-        player.kick(Component.text("Kicked"));
+        player.kick(Component.text(SettingsLocale.KICK_MESSAGE.getString().replace("<issuer>", issuerName)));
     }
 
     public void unMute() {
@@ -76,6 +120,36 @@ public class Profile {
             if (punishment.getType().isMute()) punishment.setUndone();
         }
     }
+
+    public void unBan() {
+        for (Punishment punishment : punishments) {
+            if (punishment.getType().isBan()) punishment.setUndone();
+        }
+    }
+
+    public void ban(UUID issuer, boolean ip, boolean perm, String duration) {
+        PunishmentType punishmentType = null;
+
+        if (ip) {
+            punishmentType = PunishmentType.IP_BAN;
+        }
+
+        if (perm) {
+            punishmentType = PunishmentType.BAN;
+        }
+
+        if (punishmentType == null) {
+            punishmentType = PunishmentType.TEMP_BAN;
+        }
+
+        addPunishment(new Punishment(punishmentType, issuer, TimeUtil.parse(duration), perm));
+
+        Player player = getPlayer();
+        if (player == null) return;
+
+        player.kick(banMessage());
+    }
+
     private List<String> serializePunishments() {
         if (punishments.isEmpty()) {
             return new ArrayList<>();
@@ -92,23 +166,6 @@ public class Profile {
         return Main.instance.getGson().toJson(punishment);
     }
 
-    private static Punishment deserialize(String serialized) {
-        return Main.instance.getGson().fromJson(serialized, Punishment.class);
-    }
-
-    private static List<Punishment> deserializePunishments(List<String> punishments) {
-        if (punishments == null || punishments.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        List<Punishment> deserialized = new ArrayList<>();
-        for (String serialized : punishments) {
-            deserialized.add(deserialize(serialized));
-        }
-        return deserialized;
-    }
-
-
     private DataDocument serialize() {
         Document document = new Document();
 
@@ -116,13 +173,6 @@ public class Profile {
         document.put("uuid", uuid.toString());
 
         return new DataDocument(document);
-    }
-
-    public static Profile deserialize(DataDocument dataDocument) {
-        return new Profile(
-                UUID.fromString(dataDocument.getString("uuid")),
-                deserializePunishments(dataDocument.getList("punishments")));
-
     }
 
     public void addPunishment(Punishment punishment) {

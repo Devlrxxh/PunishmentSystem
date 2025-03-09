@@ -19,12 +19,12 @@ public class Punishment {
     private final long duration;
     @SerializedName("issuedOn")
     private final long issuedOn;
-    @SerializedName("unDone")
-    private boolean unDone;
     @SerializedName("perm")
     private final boolean perm;
     @SerializedName("issuedOnString")
     private final String issuedOnString;
+    @SerializedName("unDone")
+    private boolean unDone;
 
     public Punishment(PunishmentType type, UUID issuer, long duration, boolean perm) {
         this.type = type;
