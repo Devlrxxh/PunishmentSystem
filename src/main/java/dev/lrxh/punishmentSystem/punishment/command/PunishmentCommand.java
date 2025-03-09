@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 
 public class PunishmentCommand {
 
-    @Command(name = "ban", desc = "", usage = "<player> [-p: perm] [-ip: ip]")
-    public void ban(@Sender Player player, String playerName, boolean perm, boolean ip) {
+    @Command(name = "ban", desc = "", usage = "<player> <duration> [-p: perm] [-ip: ip]")
+    public void ban(@Sender Player player, String playerName, String duration, boolean perm, boolean ip) {
 
     }
 
@@ -16,8 +16,8 @@ public class PunishmentCommand {
 
     }
 
-    @Command(name = "mute", desc = "", usage = "<player> [-p: perm]")
-    public void mute(@Sender Player player, String playerName, boolean perm) {
+    @Command(name = "mute", desc = "", usage = "<player> <duration> [-p: perm]")
+    public void mute(@Sender Player player, String playerName, String duration, boolean perm) {
 
     }
 }
