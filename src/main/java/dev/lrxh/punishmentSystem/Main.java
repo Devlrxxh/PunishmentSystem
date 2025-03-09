@@ -8,6 +8,7 @@ import dev.lrxh.punishmentSystem.configs.ConfigService;
 import dev.lrxh.punishmentSystem.database.DatabaseService;
 import dev.lrxh.punishmentSystem.profile.ProfileListener;
 import dev.lrxh.punishmentSystem.punishment.command.PunishmentCommand;
+import dev.lrxh.punishmentSystem.utils.menu.MenuListener;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -42,7 +43,8 @@ public final class Main extends JavaPlugin {
 
     private void loadListeners() {
         List.of(
-                new ProfileListener()
+                new ProfileListener(),
+                new MenuListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 

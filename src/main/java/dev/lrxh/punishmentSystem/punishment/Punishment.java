@@ -1,7 +1,11 @@
 package dev.lrxh.punishmentSystem.punishment;
 
 import com.google.gson.annotations.SerializedName;
+import dev.lrxh.punishmentSystem.utils.DateUtils;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
@@ -13,20 +17,23 @@ public class Punishment {
     private final UUID issuer;
     @SerializedName("duration")
     private final long duration;
-    @SerializedName("issuedAt")
-    private final long issuedAt;
+    @SerializedName("issuedOn")
+    private final long issuedOn;
     @SerializedName("unDone")
     private boolean unDone;
     @SerializedName("perm")
     private final boolean perm;
+    @SerializedName("issuedOnString")
+    private final String issuedOnString;
 
     public Punishment(PunishmentType type, UUID issuer, long duration, boolean perm) {
         this.type = type;
         this.issuer = issuer;
         this.duration = duration;
-        this.issuedAt = System.currentTimeMillis();
+        this.issuedOn = System.currentTimeMillis();
         this.unDone = false;
         this.perm = perm;
+        this.issuedOnString = DateUtils.getDate();
     }
 
     public void setUndone() {
@@ -42,6 +49,32 @@ public class Punishment {
             return true;
         }
 
-        return (System.currentTimeMillis() - issuedAt) < duration;
+        return (System.currentTimeMillis() - issuedOn) < duration;
+    }
+
+    public ItemStack getIcon() {
+        Material material = null;
+
+        if (getType().isBan()) {
+            material = Material.BARRIER;
+        }
+
+        if (getType().isMute()) {
+            material = Material.YELLOW_DYE;
+        }
+
+        if (getType().isKick()) {
+            material = Material.RED_DYE;
+        }
+
+        return new ItemStack(material);
+    }
+
+    public String getIssuer() {
+        if (issuer == null) {
+            return "Console";
+        }
+
+        return Bukkit.getOfflinePlayer(issuer).getName();
     }
 }

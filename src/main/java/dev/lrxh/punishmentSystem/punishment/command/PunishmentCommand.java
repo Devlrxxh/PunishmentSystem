@@ -3,13 +3,13 @@ package dev.lrxh.punishmentSystem.punishment.command;
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Flag;
 import com.jonahseguin.drink.annotation.Sender;
-import dev.lrxh.punishmentSystem.configs.impl.MessagesLocale;
+import dev.lrxh.punishmentSystem.configs.impl.SettingsLocale;
 import dev.lrxh.punishmentSystem.configs.impl.handler.Replacement;
 import dev.lrxh.punishmentSystem.database.DatabaseService;
 import dev.lrxh.punishmentSystem.database.impl.DataDocument;
 import dev.lrxh.punishmentSystem.profile.Profile;
 import dev.lrxh.punishmentSystem.profile.ProfileService;
-import dev.lrxh.punishmentSystem.utils.CC;
+import dev.lrxh.punishmentSystem.punishment.menu.PunishmentHistoryMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -20,6 +20,27 @@ public class PunishmentCommand {
     @Command(name = "ban", desc = "", usage = "<player> <duration> [-p: perm] [-i: ip]")
     public void ban(@Sender Player player, String playerName, String duration, @Flag('p') boolean perm, @Flag('i') boolean ip) {
 
+    }
+
+    @Command(name = "history", desc = "", usage = "<player>")
+    public void history(@Sender Player player, String targetName) {
+        OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
+
+        if (target.isOnline()) {
+            new PunishmentHistoryMenu(ProfileService.get().get(target.getUniqueId()), targetName).open(player);
+            return;
+        }
+
+        DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(target.getUniqueId());
+
+        if (dataDocument == null) {
+            SettingsLocale.NEVER_JOINED.send(player, new Replacement("<player>", targetName));
+            return;
+        }
+
+        Profile profile = Profile.deserialize(dataDocument);
+
+        new PunishmentHistoryMenu(profile, targetName).open(player);
     }
 
     @Command(name = "kick", desc = "", usage = "<target>")
@@ -40,7 +61,7 @@ public class PunishmentCommand {
 
         if (dataDocument == null) {
             if (commandSender instanceof Player player)
-                MessagesLocale.NEVER_JOINED.send(player, new Replacement("<player>", targetName));
+                SettingsLocale.NEVER_JOINED.send(player, new Replacement("<player>", targetName));
             return;
         }
 
@@ -64,7 +85,7 @@ public class PunishmentCommand {
 
         if (dataDocument == null) {
             if (commandSender instanceof Player player)
-                MessagesLocale.NEVER_JOINED.send(player, new Replacement("<player>", targetName));
+                SettingsLocale.NEVER_JOINED.send(player, new Replacement("<player>", targetName));
             return;
         }
 

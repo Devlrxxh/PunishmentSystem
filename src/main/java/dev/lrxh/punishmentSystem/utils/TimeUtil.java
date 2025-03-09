@@ -13,22 +13,54 @@ public class TimeUtil {
 
         long result;
 
+        long l = Long.parseLong(timeString.substring(0, timeString.length() - 1));
         if (timeString.endsWith("h")) {
-            result = Long.parseLong(timeString.substring(0, timeString.length() - 1)) * TimeUnit.HOURS.toMillis(1);
+            result = l * TimeUnit.HOURS.toMillis(1);
         } else if (timeString.endsWith("m")) {
-            result = Long.parseLong(timeString.substring(0, timeString.length() - 1)) * TimeUnit.MINUTES.toMillis(1);
+            result = l * TimeUnit.MINUTES.toMillis(1);
         } else if (timeString.endsWith("s")) {
-            result = Long.parseLong(timeString.substring(0, timeString.length() - 1)) * TimeUnit.SECONDS.toMillis(1);
+            result = l * TimeUnit.SECONDS.toMillis(1);
         } else if (timeString.endsWith("d")) {
-            result = Long.parseLong(timeString.substring(0, timeString.length() - 1)) * TimeUnit.DAYS.toMillis(1);
+            result = l * TimeUnit.DAYS.toMillis(1);
         } else if (timeString.endsWith("y")) {
-            result = Long.parseLong(timeString.substring(0, timeString.length() - 1)) * TimeUnit.DAYS.toMillis(365); // Approximate 1 year
-        } else if (timeString.endsWith("mo")) {
-            result = Long.parseLong(timeString.substring(0, timeString.length() - 2)) * TimeUnit.DAYS.toMillis(30); // Approximate 1 month
+            result = l * TimeUnit.DAYS.toMillis(365);
         } else {
             throw new IllegalArgumentException("Invalid time string format: " + timeString);
         }
 
         return result;
     }
+
+    public String unparse(long millis) {
+        if (millis < TimeUnit.SECONDS.toMillis(1)) {
+            throw new IllegalArgumentException("Time in milliseconds is too small");
+        }
+
+        long result;
+        String timeString;
+
+        if (millis >= TimeUnit.DAYS.toMillis(365)) {
+            result = millis / TimeUnit.DAYS.toMillis(365);
+            timeString = result + "year(s)";
+        }
+        else if (millis >= TimeUnit.DAYS.toMillis(1)) {
+            result = millis / TimeUnit.DAYS.toMillis(1);
+            timeString = result + "day(s)";
+        }
+        else if (millis >= TimeUnit.HOURS.toMillis(1)) {
+            result = millis / TimeUnit.HOURS.toMillis(1);
+            timeString = result + "hour(s)";
+        }
+        else if (millis >= TimeUnit.MINUTES.toMillis(1)) {
+            result = millis / TimeUnit.MINUTES.toMillis(1);
+            timeString = result + "minute(s)";
+        }
+        else {
+            result = millis / TimeUnit.SECONDS.toMillis(1);
+            timeString = result + "second(s)";
+        }
+
+        return timeString;
+    }
+
 }
