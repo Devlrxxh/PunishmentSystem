@@ -78,7 +78,7 @@ public class Profile {
                 for (String line : SettingsLocale.BAN_MESSAGE.getStringList()) {
                     line = line.replaceAll("<issuer>", punishment.getIssuer());
                     line = line.replaceAll("<issuedOn>", punishment.getIssuedOnString());
-                    line = line.replaceAll("<duration>", TimeUtil.unparse(punishment.getDuration()));
+                    line = line.replaceAll("<duration>", punishment.getDuration());
 
                     component = component.append(Component.text(CC.color(line)));
                     component = component.appendNewline();
@@ -130,12 +130,8 @@ public class Profile {
         }
     }
 
-    public void ban(UUID issuer, boolean ip, boolean perm, String duration) {
+    public void ban(UUID issuer, boolean perm, String duration) {
         PunishmentType punishmentType = null;
-
-        if (ip) {
-            punishmentType = PunishmentType.IP_BAN;
-        }
 
         if (perm) {
             punishmentType = PunishmentType.BAN;

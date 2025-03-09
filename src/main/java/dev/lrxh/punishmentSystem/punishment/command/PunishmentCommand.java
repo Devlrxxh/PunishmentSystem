@@ -22,7 +22,7 @@ public class PunishmentCommand {
         OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
 
         if (target.isOnline()) {
-            ProfileService.get().get(target.getUniqueId()).ban(commandSender instanceof Player player ? player.getUniqueId() : null, ip, perm, duration);
+            ProfileService.get().get(target.getUniqueId()).ban(commandSender instanceof Player player ? player.getUniqueId() : null, perm, duration);
             return;
         }
 
@@ -36,7 +36,7 @@ public class PunishmentCommand {
 
         Profile profile = Profile.deserialize(dataDocument);
 
-        profile.ban(commandSender instanceof Player player ? player.getUniqueId() : null, ip, perm, duration);
+        profile.ban(commandSender instanceof Player player ? player.getUniqueId() : null, perm, duration);
     }
 
     @Command(name = "unban", desc = "", usage = "<targetName>")
