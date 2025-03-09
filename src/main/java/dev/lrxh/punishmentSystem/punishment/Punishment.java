@@ -2,6 +2,7 @@ package dev.lrxh.punishmentSystem.punishment;
 
 import com.google.gson.annotations.SerializedName;
 import dev.lrxh.punishmentSystem.utils.DateUtils;
+import dev.lrxh.punishmentSystem.utils.TimeUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -76,5 +77,13 @@ public class Punishment {
         }
 
         return Bukkit.getOfflinePlayer(issuer).getName();
+    }
+
+    public String getDuration() {
+        if (perm) {
+            return "Permanent";
+        }
+
+        return TimeUtil.unparse(duration);
     }
 }

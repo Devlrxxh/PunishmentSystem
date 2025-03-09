@@ -38,7 +38,7 @@ public class PunishmentHistoryMenu extends Menu {
                 for (String line : SettingsLocale.HISTORY_MENU_MUTE_ITEM_LORE.getStringList()) {
                     line = line.replaceAll("<issuer>", punishment.getIssuer());
                     line = line.replaceAll("<issuedOn>", punishment.getIssuedOnString());
-                    line = line.replaceAll("<duration>", TimeUtil.unparse(punishment.getDuration()));
+                    line = line.replaceAll("<duration>", punishment.getDuration());
 
                     lore.add(line);
                 }
@@ -61,7 +61,7 @@ public class PunishmentHistoryMenu extends Menu {
                 for (String line : SettingsLocale.HISTORY_MENU_BAN_ITEM_LORE.getStringList()) {
                     line = line.replaceAll("<issuer>", punishment.getIssuer());
                     line = line.replaceAll("<issuedOn>", punishment.getIssuedOnString());
-                    line = line.replaceAll("<duration>", TimeUtil.unparse(punishment.getDuration()));
+                    line = line.replaceAll("<duration>", punishment.getDuration());
 
                     lore.add(line);
                 }
