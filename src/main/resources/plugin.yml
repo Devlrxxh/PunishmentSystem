@@ -1,0 +1,4 @@
+name: PunishmentSystem
+version: '1.0.0'
+main: dev.lrxh.punishmentSystem.PunishmentSystem
+api-version: '1.21'
