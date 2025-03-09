@@ -17,8 +17,8 @@ import org.bukkit.entity.Player;
 
 public class PunishmentCommand {
 
-    @Command(name = "ban", desc = "", usage = "<player> <duration> [-p: perm] [-i: ip]")
-    public void ban(@Sender CommandSender commandSender, String targetName, String duration, @Flag('p') boolean perm, @Flag('i') boolean ip) {
+    @Command(name = "ban", desc = "", usage = "<player> <duration> [-p: perm]")
+    public void ban(@Sender CommandSender commandSender, String targetName, String duration, @Flag('p') boolean perm) {
         OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
 
         if (target.isOnline()) {
