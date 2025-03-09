@@ -28,16 +28,45 @@ public class PunishmentHistoryMenu extends Menu {
 
         for (Punishment punishment : profile.getPunishments()) {
             List<String> lore = new ArrayList<>();
+            String name = "";
 
-            for (String line : SettingsLocale.HISTORY_MENU_PUNISHMENT_LORE.getStringList()) {
-                line = line.replaceAll("<issuer>", punishment.getIssuer());
-                line = line.replaceAll("<issuedOn>", punishment.getIssuedOnString());
-                line = line.replaceAll("<duration>", TimeUtil.unparse(punishment.getDuration()));
+            if (punishment.getType().isMute()) {
+                for (String line : SettingsLocale.HISTORY_MENU_MUTE_ITEM_LORE.getStringList()) {
+                    line = line.replaceAll("<issuer>", punishment.getIssuer());
+                    line = line.replaceAll("<issuedOn>", punishment.getIssuedOnString());
+                    line = line.replaceAll("<duration>", TimeUtil.unparse(punishment.getDuration()));
 
-                lore.add(line);
+                    lore.add(line);
+                }
+
+                name = SettingsLocale.HISTORY_MENU_MUTE_ITEM_NAME.getString();
             }
 
-             buttons.add(new DisplayButton(i++, punishment.getIcon(), SettingsLocale.HISTORY_MENU_PUNISHMENT_NAME.getString().replace("<name>", punishment.getType().getName()), lore));
+            if (punishment.getType().isKick()) {
+                for (String line : SettingsLocale.HISTORY_MENU_KICK_LORE.getStringList()) {
+                    line = line.replaceAll("<issuer>", punishment.getIssuer());
+                    line = line.replaceAll("<issuedOn>", punishment.getIssuedOnString());
+
+                    lore.add(line);
+                }
+
+                name = SettingsLocale.HISTORY_MENU_KICK_NAME.getString();
+            }
+
+            if (punishment.getType().isBan()) {
+                for (String line : SettingsLocale.HISTORY_MENU_BAN_ITEM_LORE.getStringList()) {
+                    line = line.replaceAll("<issuer>", punishment.getIssuer());
+                    line = line.replaceAll("<issuedOn>", punishment.getIssuedOnString());
+                    line = line.replaceAll("<duration>", TimeUtil.unparse(punishment.getDuration()));
+
+                    lore.add(line);
+                }
+
+                name = SettingsLocale.HISTORY_MENU_BAN_ITEM_NAME.getString();
+            }
+
+
+             buttons.add(new DisplayButton(i++, punishment.getIcon(), name.replace("<name>", punishment.getType().getName()), lore));
         }
 
         return buttons;
