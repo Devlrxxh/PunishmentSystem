@@ -46,6 +46,11 @@ public class PunishmentCommand {
 
         DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(target.getUniqueId());
 
+        if (dataDocument == null) {
+            player.sendMessage(CC.color("Player never joined server"));
+            return;
+        }
+
         Profile profile = Profile.deserialize(dataDocument);
 
         profile.unMute();
@@ -59,6 +64,11 @@ public class PunishmentCommand {
 
         DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(target.getUniqueId());
 
+        if (dataDocument == null) {
+            player.sendMessage(CC.color("Player never joined server"));
+            return;
+        }
+
         Profile profile = Profile.deserialize(dataDocument);
 
         profile.mute(player.getUniqueId(), duration, false);
@@ -71,6 +81,11 @@ public class PunishmentCommand {
         OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
 
         DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(target.getUniqueId());
+
+        if (dataDocument == null) {
+            player.sendMessage(CC.color("Player never joined server"));
+            return;
+        }
 
         Profile profile = Profile.deserialize(dataDocument);
 

@@ -54,9 +54,9 @@ public class Profile {
 
     public void mute(UUID issuer, String duration, boolean perm) {
         if (perm) {
-            punishments.add(new Punishment(PunishmentType.MUTE, issuer, TimeUtil.parse(duration)));
+            punishments.add(new Punishment(PunishmentType.MUTE, issuer, TimeUtil.parse(duration), perm));
         } else {
-            punishments.add(new Punishment(PunishmentType.TEMP_MUTE, issuer, TimeUtil.parse(duration)));
+            punishments.add(new Punishment(PunishmentType.TEMP_MUTE, issuer, TimeUtil.parse(duration), perm));
         }
     }
 
@@ -65,7 +65,7 @@ public class Profile {
     }
 
     public void kick(UUID issuer) {
-        punishments.add(new Punishment(PunishmentType.KICK, issuer, 1));
+        punishments.add(new Punishment(PunishmentType.KICK, issuer, 1, false));
         Player player = getPlayer();
         if (player == null) return;
         player.kick(Component.text("Kicked"));

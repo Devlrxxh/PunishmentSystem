@@ -17,13 +17,16 @@ public class Punishment {
     private final long issuedAt;
     @SerializedName("unDone")
     private boolean unDone;
+    @SerializedName("perm")
+    private final boolean perm;
 
-    public Punishment(PunishmentType type, UUID issuer, long duration) {
+    public Punishment(PunishmentType type, UUID issuer, long duration, boolean perm) {
         this.type = type;
         this.issuer = issuer;
         this.duration = duration;
         this.issuedAt = System.currentTimeMillis();
         this.unDone = false;
+        this.perm = perm;
     }
 
     public void setUndone() {
@@ -34,6 +37,11 @@ public class Punishment {
         if (unDone) {
             return false;
         }
+
+        if (perm) {
+            return true;
+        }
+
         return (System.currentTimeMillis() - issuedAt) < duration;
     }
 }
