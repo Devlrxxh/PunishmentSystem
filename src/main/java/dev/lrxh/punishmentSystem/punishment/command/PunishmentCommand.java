@@ -1,6 +1,7 @@
 package dev.lrxh.punishmentSystem.punishment.command;
 
 import com.jonahseguin.drink.annotation.Command;
+import com.jonahseguin.drink.annotation.Flag;
 import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.punishmentSystem.database.DatabaseService;
 import dev.lrxh.punishmentSystem.database.impl.DataDocument;
@@ -25,14 +26,9 @@ public class PunishmentCommand {
         ProfileService.get().get(target.getUniqueId()).kick(player.getUniqueId());
     }
 
-    @Command(name = "mute", desc = "", usage = "<target> <duration>")
-    public void mute(@Sender Player player, Player target, String duration) {
-        ProfileService.get().get(target.getUniqueId()).mute(player.getUniqueId(), duration, false);
-    }
-
-    @Command(name = "mute", desc = "", usage = "<target>")
-    public void mute(@Sender Player player, Player target) {
-        ProfileService.get().get(target.getUniqueId()).mute(player.getUniqueId(), "1s", true);
+    @Command(name = "mute", desc = "", usage = "<target> <duration> [-p: perm]")
+    public void mute(@Sender Player player, Player target, String duration, @Flag('p') boolean perm) {
+        ProfileService.get().get(target.getUniqueId()).mute(player.getUniqueId(), duration, perm);
     }
 
     @Command(name = "unmute", desc = "", usage = "<target>")
@@ -58,8 +54,8 @@ public class PunishmentCommand {
         profile.save();
     }
 
-    @Command(name = "mute", desc = "", usage = "<targetName> <duration>")
-    public void mute(@Sender Player player, String targetName, String duration) {
+    @Command(name = "mute", desc = "", usage = "<targetName> <duration> [-p: perm]")
+    public void mute(@Sender Player player, String targetName, String duration, @Flag('p') boolean perm) {
         OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
 
         DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(target.getUniqueId());
@@ -71,25 +67,7 @@ public class PunishmentCommand {
 
         Profile profile = Profile.deserialize(dataDocument);
 
-        profile.mute(player.getUniqueId(), duration, false);
-
-        profile.save();
-    }
-
-    @Command(name = "mute", desc = "", usage = "<targetName>")
-    public void mute(@Sender Player player, String targetName) {
-        OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-
-        DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(target.getUniqueId());
-
-        if (dataDocument == null) {
-            player.sendMessage(CC.color("Player never joined server"));
-            return;
-        }
-
-        Profile profile = Profile.deserialize(dataDocument);
-
-        profile.mute(player.getUniqueId(), "1s", true);
+        profile.mute(player.getUniqueId(), duration, perm);
 
         profile.save();
     }

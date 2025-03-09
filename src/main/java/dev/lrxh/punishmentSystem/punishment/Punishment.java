@@ -39,7 +39,7 @@ public class Punishment {
         }
 
         if (perm) {
-            return true;
+            return false;
         }
 
         return (System.currentTimeMillis() - issuedAt) < duration;
