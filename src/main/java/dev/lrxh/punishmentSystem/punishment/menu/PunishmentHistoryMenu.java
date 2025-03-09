@@ -11,6 +11,7 @@ import dev.lrxh.punishmentSystem.utils.menu.impl.DisplayButton;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PunishmentHistoryMenu extends Menu {
@@ -26,7 +27,10 @@ public class PunishmentHistoryMenu extends Menu {
         List<Button> buttons = new ArrayList<>();
         int i = 10;
 
-        for (Punishment punishment : profile.getPunishments()) {
+        List<Punishment> punishments = new ArrayList<>(profile.getPunishments());
+        Collections.reverse(punishments);
+
+        for (Punishment punishment : punishments) {
             List<String> lore = new ArrayList<>();
             String name = "";
 
