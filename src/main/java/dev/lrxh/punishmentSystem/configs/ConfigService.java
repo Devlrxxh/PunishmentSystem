@@ -19,10 +19,6 @@ public class ConfigService {
     public void load() {
         settingsConfig = new ConfigFile("settings");
 
-        initialize();
-    }
-
-    public void initialize() {
         SettingsLocale.URI.load();
     }
 }

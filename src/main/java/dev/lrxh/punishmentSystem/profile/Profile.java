@@ -54,9 +54,9 @@ public class Profile {
 
     public void mute(UUID issuer, String duration, boolean perm) {
         if (perm) {
-            punishments.add(new Punishment(PunishmentType.MUTE, issuer, TimeUtil.parse(duration), perm));
+            punishments.add(new Punishment(PunishmentType.MUTE, issuer, TimeUtil.parse(duration), true));
         } else {
-            punishments.add(new Punishment(PunishmentType.TEMP_MUTE, issuer, TimeUtil.parse(duration), perm));
+            punishments.add(new Punishment(PunishmentType.TEMP_MUTE, issuer, TimeUtil.parse(duration), false));
         }
     }
 
