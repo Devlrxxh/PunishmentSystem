@@ -3,10 +3,13 @@ package com.jonahseguin.drink.provider;
 import com.jonahseguin.drink.argument.CommandArg;
 import com.jonahseguin.drink.exception.CommandExitMessage;
 import com.jonahseguin.drink.parametric.DrinkProvider;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StringProvider extends DrinkProvider<String> {
@@ -42,6 +45,16 @@ public class StringProvider extends DrinkProvider<String> {
     @Override
     public String argumentDescription() {
         return "string";
+    }
+
+    @Override
+    public List<String> getSuggestions(@Nonnull String prefix) {
+        List<String> players = new ArrayList<>();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            players.add(player.getName());
+        }
+
+        return players;
     }
 
 }

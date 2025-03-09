@@ -10,14 +10,13 @@ import dev.lrxh.punishmentSystem.profile.ProfileService;
 import dev.lrxh.punishmentSystem.utils.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import javax.xml.crypto.Data;
 
 public class PunishmentCommand {
 
-    @Command(name = "ban", desc = "", usage = "<player> <duration> [-p: perm] [-ip: ip]")
-    public void ban(@Sender Player player, String playerName, String duration, boolean perm, boolean ip) {
+    @Command(name = "ban", desc = "", usage = "<player> <duration> [-p: perm] [-i: ip]")
+    public void ban(@Sender Player player, String playerName, String duration, @Flag('p') boolean perm, @Flag('i') boolean ip) {
 
     }
 
@@ -26,24 +25,19 @@ public class PunishmentCommand {
         ProfileService.get().get(target.getUniqueId()).kick(player.getUniqueId());
     }
 
-    @Command(name = "mute", desc = "", usage = "<target> <duration> [-p: perm]")
-    public void mute(@Sender Player player, Player target, String duration, @Flag('p') boolean perm) {
-        ProfileService.get().get(target.getUniqueId()).mute(player.getUniqueId(), duration, perm);
-    }
-
-    @Command(name = "unmute", desc = "", usage = "<target>")
-    public void unmute(@Sender Player player, Player target) {
-        ProfileService.get().get(target.getUniqueId()).unMute();
-    }
-
     @Command(name = "unmute", desc = "", usage = "<targetName>")
-    public void unmute(@Sender Player player, String targetName) {
+    public void unmute(@Sender CommandSender commandSender, String targetName) {
         OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
+
+        if (target.isOnline()) {
+                ProfileService.get().get(target.getUniqueId()).unMute();
+                return;
+        }
 
         DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(target.getUniqueId());
 
         if (dataDocument == null) {
-            player.sendMessage(CC.color("Player never joined server"));
+            commandSender.sendMessage(CC.color("Player never joined server"));
             return;
         }
 
@@ -55,19 +49,28 @@ public class PunishmentCommand {
     }
 
     @Command(name = "mute", desc = "", usage = "<targetName> <duration> [-p: perm]")
-    public void mute(@Sender Player player, String targetName, String duration, @Flag('p') boolean perm) {
+    public void mute(@Sender CommandSender commandSender, String targetName, String duration, @Flag('p') boolean perm) {
         OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
+
+        if (target.isOnline()) {
+            if (commandSender instanceof Player player) {
+                ProfileService.get().get(target.getUniqueId()).mute(player.getUniqueId(), duration, perm);
+            } else {
+                ProfileService.get().get(target.getUniqueId()).mute(null, duration, perm);
+            }
+            return;
+        }
 
         DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(target.getUniqueId());
 
         if (dataDocument == null) {
-            player.sendMessage(CC.color("Player never joined server"));
+            commandSender.sendMessage(CC.color("Player never joined server"));
             return;
         }
 
         Profile profile = Profile.deserialize(dataDocument);
 
-        profile.mute(player.getUniqueId(), duration, perm);
+        profile.mute(commandSender instanceof Player player ? player.getUniqueId() : null, duration, perm);
 
         profile.save();
     }
