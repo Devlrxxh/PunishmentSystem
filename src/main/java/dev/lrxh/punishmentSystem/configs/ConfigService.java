@@ -1,7 +1,7 @@
 package dev.lrxh.punishmentSystem.configs;
 
 
-import dev.lrxh.punishmentSystem.configs.impl.*;
+import dev.lrxh.punishmentSystem.configs.impl.SettingsLocale;
 import dev.lrxh.punishmentSystem.utils.ConfigFile;
 import lombok.Getter;
 

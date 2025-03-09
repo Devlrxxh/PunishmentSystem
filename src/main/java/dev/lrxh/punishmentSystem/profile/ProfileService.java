@@ -1,6 +1,7 @@
 package dev.lrxh.punishmentSystem.profile;
 
-import org.bukkit.entity.Player;
+import dev.lrxh.punishmentSystem.database.DatabaseService;
+import dev.lrxh.punishmentSystem.database.impl.DataDocument;
 
 import java.util.IdentityHashMap;
 import java.util.UUID;
@@ -16,11 +17,20 @@ public class ProfileService {
     }
 
     public Profile create(UUID uuid) {
-        profiles.put(uuid, new Profile(uuid));
+        DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(uuid);
+        if (dataDocument == null) {
+            Profile profile = new Profile(uuid);
+            profile.save();
+            profiles.put(uuid, profile);
+            return profile;
+        }
+
+        profiles.put(uuid, Profile.deserialize(dataDocument));
         return profiles.get(uuid);
     }
 
     public void remove(UUID uuid) {
+        profiles.get(uuid).save();
         profiles.remove(uuid);
     }
 

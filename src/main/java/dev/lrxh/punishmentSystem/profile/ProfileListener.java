@@ -1,12 +1,11 @@
 package dev.lrxh.punishmentSystem.profile;
 
-import dev.lrxh.punishmentSystem.punishment.Punishment;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ProfileListener implements Listener {
@@ -25,7 +24,7 @@ public class ProfileListener implements Listener {
     }
 
     @EventHandler
-    public void onMessage(AsyncPlayerChatEvent event) {
+    public void onMessage(AsyncChatEvent event) {
         if (ProfileService.get().get(event.getPlayer().getUniqueId()).disallowTalk()) {
             event.setCancelled(true);
             event.getPlayer().sendMessage("You cant talk ");

@@ -4,6 +4,7 @@ import com.google.gson.JsonParseException;
 import dev.lrxh.punishmentSystem.Main;
 import org.bson.Document;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,9 +85,9 @@ public class DataDocument {
     }
 
     @SuppressWarnings("unchecked")
-    public List<String> getList(String key, List<String> defaultValue) {
+    public List<String> getList(String key) {
         Object value = data.get(key);
-        if (value == null) return defaultValue;
+        if (value == null) return new ArrayList<>();
 
         return (List<String>) value;
     }
