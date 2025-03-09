@@ -14,9 +14,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
+@Getter
 public final class Main extends JavaPlugin {
     public static Main instance;
-    @Getter
     private Gson gson;
 
     @Override
@@ -46,10 +46,5 @@ public final class Main extends JavaPlugin {
                 new ProfileListener(),
                 new MenuListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
     }
 }

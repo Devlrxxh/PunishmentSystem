@@ -11,6 +11,7 @@ public class ProfileListener implements Listener {
     @EventHandler
     public void onJoin(AsyncPlayerPreLoginEvent event) {
         Profile profile = ProfileService.get().create(event.getUniqueId());
+
         if (profile.disallowJoin()) {
             event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, profile.banMessage());
             ProfileService.get().remove(event.getUniqueId());

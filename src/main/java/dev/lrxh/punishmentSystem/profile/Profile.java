@@ -8,7 +8,6 @@ import dev.lrxh.punishmentSystem.punishment.Punishment;
 import dev.lrxh.punishmentSystem.punishment.PunishmentType;
 import dev.lrxh.punishmentSystem.utils.CC;
 import dev.lrxh.punishmentSystem.utils.TimeUtil;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bson.Document;
@@ -19,15 +18,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor
+@Getter
 public class Profile {
     private final UUID uuid;
-    @Getter
     private final List<Punishment> punishments;
 
     public Profile(UUID uuid) {
         this.uuid = uuid;
         this.punishments = new ArrayList<>();
+    }
+
+    public Profile(UUID uuid, List<Punishment> punishments) {
+        this.uuid = uuid;
+        this.punishments = punishments;
     }
 
     private static Punishment deserialize(String serialized) {

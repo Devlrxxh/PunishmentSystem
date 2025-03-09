@@ -40,6 +40,7 @@ public enum SettingsLocale implements IDataAccessor {
             "&fIssued on: &c<issuedOn>"),
     KICK_MESSAGE("KICK.MESSAGE", DataType.STRING, "&cYou have been kicked by <issuer>"),
     MUTE_MESSAGE("MUTE_MESSAGE", DataType.STRING_LIST, "&cYou are muted and won't be able to talk!"),
+    IP_BAN_MESSAGE("IP_BAN_MESSAGE", DataType.STRING, "&cYour IP is banned from this server."),
     DATABASE_TYPE("DATABASE.TYPE", "Database Type. MONGO, MYSQL, SQLITE", DataType.STRING, "SQLITE"),
     URI("DATABASE.URI", "Connection URI.", DataType.STRING, "NONE"),
     DATABASE("DATABASE.DATABASE_NAME", "Database Name", DataType.STRING, "punishments");
