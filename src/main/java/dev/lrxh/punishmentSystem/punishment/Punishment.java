@@ -22,8 +22,8 @@ public class Punishment {
     private final long issuedOn;
     @SerializedName("perm")
     private final boolean perm;
-    @SerializedName("issuedOnString")
-    private final String issuedOnString;
+    @SerializedName("issuedOnDate")
+    private final String issuedOnDate;
     @SerializedName("unDone")
     private boolean unDone;
 
@@ -34,7 +34,7 @@ public class Punishment {
         this.issuedOn = System.currentTimeMillis();
         this.unDone = false;
         this.perm = perm;
-        this.issuedOnString = DateUtils.getDate();
+        this.issuedOnDate = DateUtils.getDate();
     }
 
     public void setUndone() {
