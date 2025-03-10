@@ -37,6 +37,7 @@ public class PunishmentCommand {
         Profile profile = Profile.deserialize(dataDocument);
 
         profile.ban(commandSender instanceof Player player ? player.getUniqueId() : null, perm, duration);
+        profile.save();
     }
 
     @Command(name = "unban", desc = "", usage = "<targetName>")
@@ -59,7 +60,6 @@ public class PunishmentCommand {
         Profile profile = Profile.deserialize(dataDocument);
 
         profile.unBan();
-
         profile.save();
     }
 
@@ -109,7 +109,6 @@ public class PunishmentCommand {
         Profile profile = Profile.deserialize(dataDocument);
 
         profile.unMute();
-
         profile.save();
     }
 
@@ -133,7 +132,6 @@ public class PunishmentCommand {
         Profile profile = Profile.deserialize(dataDocument);
 
         profile.mute(commandSender instanceof Player player ? player.getUniqueId() : null, duration, perm);
-
         profile.save();
     }
 }
